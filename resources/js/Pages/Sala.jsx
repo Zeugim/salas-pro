@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import WeatherService from '../Components/WeatherService';
 
 const Show = ({ sala }) => {
     const [weatherData, setWeatherData] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const data = await WeatherService.getWeatherByMunicipality('01', '01001'); // Ejemplo con provinciaId y municipioId
-                setWeatherData(data);
-            } catch (error) {
-                console.error('Error fetching weather data:', error);
-            }
-        };
+            const data = fetch('/api/weather/01/01001')
+                .then(response => response.json())
+                .then(data => setWeatherData(data))
+                .catch(error => console.error('Error fetching weather data:', error));
+        }
 
         fetchData();
     }, []);
@@ -55,6 +52,10 @@ const Show = ({ sala }) => {
                             <td>{sala.aforo}</td>
                         </tr>
                         <tr>
+                            <td><strong>Favorito</strong></td>
+                            <td><input type='radio' value='1' /> </td>
+                        </tr>
+                        <tr>
                             <td colSpan="2">
                                 <div>
                                     {weatherData ? (
@@ -62,6 +63,7 @@ const Show = ({ sala }) => {
                                             <h2>Información meteorológica</h2>
                                             <p>Temperatura: {weatherData.temperatura_actual}</p>
                                             <p>Estado del cielo: {weatherData.estado_cielo}</p>
+                                            <p>Humedad: {weatherData.humedad}</p>
                                             {/* Agrega más campos según los datos que recibas de la API */}
                                         </div>
                                     ) : (

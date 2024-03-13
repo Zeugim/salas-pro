@@ -428,6 +428,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion, salas }) {
                                             <td>{sala.municipio}</td>
                                             <td>{sala.genero}</td>
                                             <td>{sala.aforo}</td>
+                                            <td><input type='radio' value='1' /></td>
                                         </tr>
                                     ))}
                             </tbody>

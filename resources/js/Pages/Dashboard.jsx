@@ -12,7 +12,7 @@ export default function Dashboard({ auth }) {
             <div className="dash1">
                 <div className="dash2">
                     <div className="dash3">
-                        <div className="dash4">¡Hola {auth.user.name}!</div>
+                        <div className="dash4">¡Hola {auth.user.name}! Estas son tus salas guardadadas:</div>
                     </div>
                 </div>
             </div>

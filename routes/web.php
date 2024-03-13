@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\SalaController;
+use App\Http\Controllers\AdminAuth\AdminAuthLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,26 +19,21 @@ use App\Http\Controllers\SalaController;
 |
 */
 
-
+Route::get('/admin', function () {
+    return view('admin_panel');
+});
 
 Route::get('/salas', [SalaController::class, 'index']);
 
 Route::get('/salas/{id}', [SalaController::class, 'show'])->name('sala.show');
 
 
-Route::get('/welcome', function () {
+Route::get('/', function () {
     $salas = App\Models\Sala::all();
     return Inertia::render('Welcome', ['salas' => $salas]);
 })->name('welcome');
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -48,5 +44,30 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+// Rutas para la autenticación del usuario administrador
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('/login', [AdminAuthLoginController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/login', [AdminAuthLoginController::class, 'login'])->name('login.submit');
+    Route::post('/logout', [AdminAuthLoginController::class, 'logout'])->name('logout');
+    Route::middleware('auth:admin')->group(function () {
+        // Rutas del panel de administración
+        Route::get('/dashboard', [AdminAuthLoginController::class, 'dashboard'])->name('dashboard');
+        // Otras rutas del panel de administración
+    });
+});
+
+// Rutas para la gestión de salas por el administrador
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/rooms', [App\Http\Controllers\AdminRoomController::class, 'index'])->name('admin.rooms.index');
+    Route::get('/admin/rooms/create', [App\Http\Controllers\AdminRoomController::class, 'create'])->name('admin.rooms.create');
+    Route::post('/admin/rooms', [App\Http\Controllers\AdminRoomController::class, 'store'])->name('admin.rooms.store');
+    Route::get('/admin/rooms/{room}/edit', [App\Http\Controllers\AdminRoomController::class, 'edit'])->name('admin.rooms.edit');
+    Route::put('/admin/rooms/{room}', [App\Http\Controllers\AdminRoomController::class, 'update'])->name('admin.rooms.update');
+    Route::delete('/admin/rooms/{room}', [App\Http\Controllers\AdminRoomController::class, 'destroy'])->name('admin.rooms.destroy');
+});
+
+
 
 require __DIR__.'/auth.php';
