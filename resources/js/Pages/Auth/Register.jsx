@@ -29,94 +29,90 @@ export default function Register() {
     return (
         <GuestLayout>
             <Head title="Register" />
-            <div className='log0'>
+            <h1>Crear cuenta</h1>
+            <div className='custom-max-width p-5 my-5 mx-auto'>
                 <form onSubmit={submit}>
                     <div>
-                        <InputLabel htmlFor="name" value="Nombre" />
+                        <InputLabel htmlFor="name" value="Nombre:" />
 
                         <TextInput
                             id="name"
                             name="name"
                             value={data.name}
-                            className="log2"
+                            className="log2 d-block mt-1 p-1"
                             autoComplete="name"
                             isFocused={true}
                             onChange={(e) => setData('name', e.target.value)}
                             required
                         />
 
-                        <InputError message={errors.name} className="log34" />
+                        <InputError message={errors.name} />
                     </div>
 
-                    <div className="log3">
-                        <InputLabel htmlFor="email" value="Email" />
+                    <div>
+                        <InputLabel htmlFor="email" value="Email:" />
 
                         <TextInput
                             id="email"
                             type="email"
                             name="email"
                             value={data.email}
-                            className="log2"
+                            className="log2 d-block mt-1 p-1"
                             autoComplete="username"
                             onChange={(e) => setData('email', e.target.value)}
                             required
                         />
 
-                        <InputError message={errors.email} className="log34" />
+                        <InputError message={errors.email} />
                     </div>
 
-                    <div className="log3">
-                        <InputLabel htmlFor="password" value="Contraseña" />
+                    <div>
+                        <InputLabel htmlFor="password" value="Contraseña:" />
 
                         <TextInput
                             id="password"
                             type="password"
                             name="password"
                             value={data.password}
-                            className="log2"
+                            className="log2 d-block mt-1 p-1"
                             autoComplete="new-password"
                             onChange={(e) => setData('password', e.target.value)}
                             required
                         />
 
-                        <InputError message={errors.password} className="log34" />
+                        <InputError message={errors.password} />
                     </div>
 
-                    <div className="log3">
-                        <InputLabel htmlFor="password_confirmation" value="Confirmar contraseña" />
+                    <div>
+                        <InputLabel htmlFor="password_confirmation" value="Confirmar contraseña:" />
 
                         <TextInput
                             id="password_confirmation"
                             type="password"
                             name="password_confirmation"
                             value={data.password_confirmation}
-                            className="log2"
+                            className="log2 d-block mt-1 p-1"
                             autoComplete="new-password"
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             required
                         />
 
-                        <InputError message={errors.password_confirmation} className="log34" />
+                        <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <div className="log7">
-                        <Link
-                            href={route('login')}
-                            className="log8"
-                        >
-                            ¿Ya estás registrado?
-                        </Link>
-
+                    <div className="d-flex justify-content-center mt-4">
                         <PrimaryButton className="log-btn" disabled={processing}>
                             Registrarse
                         </PrimaryButton>
                     </div>
-                    <Link
-                        href={route('login')}
-                        className="panel"
-                    >
-                        Iniciar sesión
-                    </Link>
+                    <div className="d-flex justify-content-center mt-4">
+                        <Link
+                            href={route('login')}
+                            className="forget-pass"
+                        >
+                            ¿Ya estás registrado?
+                        </Link>
+                    </div>
                 </form>
             </div>
         </GuestLayout>

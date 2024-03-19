@@ -11,13 +11,23 @@ class SalaController extends Controller
     public function index()
     {
         $salas = Sala::all();
-        return (Inertia::render("Welcome", compact("salas")));
+        $user = auth()->user();
+        $salasFavoritas=[];
+        if($user)
+            $salasFavoritas = $user->salas()->get();
+        return (Inertia::render("Welcome", compact("salas", "user", "salasFavoritas")));
     }
 
     public function show($id)
     {
         $sala = Sala::findOrFail($id);
         return Inertia::render('Sala', ['sala' => $sala]);
+    }
+
+    public function provincias()
+    {
+        $provincias = Sala::distinct('provincia')->pluck('provincia');
+        return response()->json($provincias);
     }
 }
 

@@ -29,80 +29,79 @@ export default function Login({ status, canResetPassword }) {
     return (
         <GuestLayout>
             <Head title="Log in" />
+            <h1>Inicio de sesión</h1>
 
-            {status && <div className="log1">{status}</div>}
-            <div className='log0'>
+            {status && <div className="log1 mb-2">{status}</div>}
+            <div className="custom-max-width p-5 my-5 mx-auto">
                 <form onSubmit={submit}>
-                    {/* <Link
-                        href={route('/app')}
-                        className="panel"
-                    >
-                        Inicio
-                    </Link> */}
                     <div>
-                        <InputLabel htmlFor="email" value="Email" clasName />
+                        <InputLabel htmlFor="email" value="Email:" />
 
                         <TextInput
                             id="email"
                             type="email"
                             name="email"
                             value={data.email}
-                            className="log2"
+                            className="log2 d-block mt-1 p-1"
                             autoComplete="username"
                             isFocused={true}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="Ej: tu@email.com"
                         />
 
-                        <InputError message={errors.email} className="log23" />
+                        <InputError message={errors.email} />
                     </div>
 
-                    <div className="log3">
-                        <InputLabel htmlFor="password" value="Contraseña" />
+                    <div>
+                        <InputLabel htmlFor="password" value="Contraseña:" />
 
                         <TextInput
                             id="password"
                             type="password"
                             name="password"
                             value={data.password}
-                            className="log2"
+                            className="log2 d-block mt-1 p-1"
                             autoComplete="current-password"
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Escribe tu contraseña"
                         />
 
-                        <InputError message={errors.password} className="log34" />
+                        <InputError message={errors.password} />
                     </div>
 
-                    <div className="log4">
-                        <label className="log5">
+                    <div className="d-flex justify-content-center mt-3">
+                        <label className="d-flex align-items-center">
                             <Checkbox
                                 name="remember"
                                 checked={data.remember}
                                 onChange={(e) => setData('remember', e.target.checked)}
                             />
-                            <span className="log6">Recordar cuenta</span>
+                            <span className="remember-check mx-2">Recordar cuenta</span>
                         </label>
                     </div>
 
-                    <div className="log7">
+                    <div className="d-flex justify-content-center mt-2">
+
+                        <PrimaryButton disabled={processing}>
+                            Iniciar sesión
+                        </PrimaryButton>
+
+
+                    </div>
+                    <div className="d-flex justify-content-center mt-2">
                         {canResetPassword && (
                             <Link
                                 href={route('password.request')}
-                                className="log8"
+                                className="forget-pass"
                             >
                                 ¿Olvidaste tu contraseña?
                             </Link>
                         )}
-
-                        <PrimaryButton className="log-btn" disabled={processing}>
-                            Iniciar sesión
-                        </PrimaryButton>
                     </div>
-                    <div className="register-btn">
+                    <div className="d-flex justify-content-center mt-5">
                         <Link
                             href={route('register')}
-                            className="register-btn"
+                            className="btn btn-outline-dark"
                         >
                             Registrarse
                         </Link>

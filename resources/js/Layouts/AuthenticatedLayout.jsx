@@ -8,45 +8,47 @@ import { Link } from '@inertiajs/react';
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
+    const LogOut = () => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="grey" width="24px" height="24px">
+            <path d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" />
+        </svg>
+    )
 
     return (
         <div className="auth-fondo">
             <nav className="auth-head">
-                <div className="auth-topbar">
-                    <div className="auth0">
-                        <div className="auth1">
-                            {/* <div className="auth2">
-                                <Link href="/">
-                                    <ApplicationLogo className="auth3" />
-                                </Link>
-                            </div> */}
-
-                            <div className="auth4">
-                                <NavLink href={route('welcome')} active={route().current('welcome')}>
+                <div className="mx-auto px-5">
+                    <div className="auth0 d-flex jusfity-content-space-between">
+                        <div className="d-flex">
+                            <div className="d-flex mx-5">
+                                <NavLink href={route('welcome')} active={route().current('welcome')} className="d-inline-flex align-items-center p-2 text-decoration-none navlink">
                                     Inicio
                                 </NavLink>
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('dashboard')} active={route().current('dashboard')} className="d-inline-flex align-items-center p-2 text-decoration-none navlink">
                                     Salas
                                 </NavLink>
-                                <NavLink href={route('profile.edit')} active={route().current('profile.edit')}>
+                                <NavLink href={route('profile.edit')} active={route().current('profile.edit')} className="d-inline-flex align-items-center p-2 text-decoration-none navlink">
                                     Perfil
+                                </NavLink>
+                                <NavLink href={route('logout')} method="post" as="text" className="d-inline-flex align-items-center p-2 text-danger d-lg-none">
+                                    Cerrar
                                 </NavLink>
                             </div>
                         </div>
 
-                        <div className="auth5">
-                            <div className="auth6">
+                        <div className="d-flex align-items-center auth5">
+                            <div className="ms-3 position-relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <span className="auth7">
+                                        <span>
                                             <button
                                                 type="button"
-                                                className="auth-button"
+                                                className="auth-dropdown d-inline-flex align-items-center px-3 py-1"
                                             >
                                                 {user.name}
 
                                                 <svg
-                                                    className="auth-flecha"
+                                                    className="auth-arrow mx-1"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
@@ -73,59 +75,13 @@ export default function Authenticated({ user, header, children }) {
                                 </Dropdown>
                             </div>
                         </div>
-
-                        {/* <div className="auth8">
-                            <button
-                                onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
-                                className="auth9"
-                            >
-                                <svg className="auth-menu" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        className={!showingNavigationDropdown ? 'auth-inline-flex' : 'auth-hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={showingNavigationDropdown ? 'auth-inline-flex' : 'auth-hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div> */}
                     </div>
                 </div>
-
-                {/* <div className={(showingNavigationDropdown ? 'auth-block' : 'auth-hidden')}>
-                    <div className="auth-salas">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Salas
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <div className="auth-name">
-                        <div className="auth-name2">
-                            <div className="auth-name3">{user.name}</div>
-                            <div className="auth-email">{user.email}</div>
-                        </div>
-
-                        <div className="auth-profile">
-                            <ResponsiveNavLink href={route('profile.edit')}>Perfil</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Cerrar sesión
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div> */}
             </nav>
 
             {header && (
-                <header className="auth-header">
-                    <div className="auth-header2">{header}</div>
+                <header className="auth-header d-flex align-items-center">
+                    <div className="mx-auto py-3 px-2">{header}</div>
                 </header>
             )}
 

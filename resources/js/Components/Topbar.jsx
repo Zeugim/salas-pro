@@ -38,12 +38,6 @@ const Topbar = ({ auth, route }) => {
                         >
                             Acceso
                         </Link>
-                        {/* <Link
-                            href={route('register')}
-                            className="panel"
-                        >
-                            Registrarse
-                        </Link> */}
                     </>
                 )}
             </div>

@@ -7,6 +7,8 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\AdminAuth\AdminAuthLoginController;
+use App\Http\Controllers\AdminRoomController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,24 +21,35 @@ use App\Http\Controllers\AdminAuth\AdminAuthLoginController;
 |
 */
 
-Route::get('/admin', function () {
-    return view('admin_panel');
-});
-
 Route::get('/salas', [SalaController::class, 'index']);
+
+Route::get('/addfavoritos/{user}/{sala}', [\App\Http\Controllers\FavoritosController::class, 'add_favorito']);
+Route::get('/delfavoritos/{user}/{sala}', [\App\Http\Controllers\FavoritosController::class, 'del_favorito']);
 
 Route::get('/salas/{id}', [SalaController::class, 'show'])->name('sala.show');
 
 
 Route::get('/', function () {
     $salas = App\Models\Sala::all();
-    return Inertia::render('Welcome', ['salas' => $salas]);
+    $user = auth()->user();
+    $salasFavoritas=[];
+    if($user) {
+        $salasFavoritas = $user->salas()->get();
+        info("Salas favoritas de $user->id" . $salasFavoritas);
+    }
+    return Inertia::render('Welcome', compact("salas","user", "salasFavoritas"));
 })->name('welcome');
 
 
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $user = auth()->user();
+    if ($user) {
+        $salas = $user->salas()->get();
+        info("valor de salas $salas");
+    }
+
+    return Inertia::render('Dashboard',compact('user','salas'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -44,6 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/provincias', [SalaController::class, 'provincias'])->name('provincias.index');
+Route::get('/municipios-por-provincia', [SalaController::class, 'municipiosPorProvincia']);
 
 
 // Rutas para la autenticación del usuario administrador
@@ -60,12 +76,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 // Rutas para la gestión de salas por el administrador
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/admin/rooms', [App\Http\Controllers\AdminRoomController::class, 'index'])->name('admin.rooms.index');
-    Route::get('/admin/rooms/create', [App\Http\Controllers\AdminRoomController::class, 'create'])->name('admin.rooms.create');
-    Route::post('/admin/rooms', [App\Http\Controllers\AdminRoomController::class, 'store'])->name('admin.rooms.store');
-    Route::get('/admin/rooms/{room}/edit', [App\Http\Controllers\AdminRoomController::class, 'edit'])->name('admin.rooms.edit');
-    Route::put('/admin/rooms/{room}', [App\Http\Controllers\AdminRoomController::class, 'update'])->name('admin.rooms.update');
-    Route::delete('/admin/rooms/{room}', [App\Http\Controllers\AdminRoomController::class, 'destroy'])->name('admin.rooms.destroy');
+    Route::get('/admin/salas', [App\Http\Controllers\AdminRoomController::class, 'index'])->name('admin.salas.index');
+    Route::get('/admin/salas/create', [App\Http\Controllers\AdminRoomController::class, 'create'])->name('admin.salas.create');
+    Route::post('/admin/salas', [App\Http\Controllers\AdminRoomController::class, 'store'])->name('admin.salas.store');
+    Route::get('/admin/salas/{sala}/edit', [App\Http\Controllers\AdminRoomController::class, 'edit'])->name('admin.salas.edit');
+    Route::put('/admin/salas/{sala}', [App\Http\Controllers\AdminRoomController::class, 'update'])->name('admin.salas.update');
+    Route::delete('/admin/salas/{sala}', [App\Http\Controllers\AdminRoomController::class, 'destroy'])->name('admin.salas.destroy');
 });
 
 

@@ -3,37 +3,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Room;
+use Inertia\Inertia;
+use App\Models\Sala;
 
 class AdminRoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::all();
-        return view('admin.rooms.index', compact('rooms'));
+        $salas = Sala::all();
+        return inertia('AdminPanel/AdminPanel', ['salas' => $salas]);
     }
 
     public function create()
     {
-        return view('admin.rooms.create');
+        return Inertia::render('AdminPanel/CreateRoomForm');
     }
 
     public function store(Request $request)
     {
-        // Validar y guardar la nueva sala
+        $datos=$request->input();
+        $sala=new Sala($datos);
+        $sala->save();
+        $salas = Sala::all();
+        return inertia('AdminPanel/AdminPanel', ['salas' => $salas]);
     }
 
-    public function edit(Room $room)
+    public function edit(Sala $sala)
     {
-        return view('admin.rooms.edit', compact('room'));
+       // return view('admin.salas.edit', compact('sala'));
+        return Inertia::render('AdminPanel/EditRoomForm');
     }
 
-    public function update(Request $request, Room $room)
+    public function update(Request $request, Sala $sala)
     {
         // Validar y actualizar la sala
     }
 
-    public function destroy(Room $room)
+    public function destroy(Sala $sala)
     {
         // Eliminar la sala
     }

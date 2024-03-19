@@ -34,6 +34,7 @@ class AdminAuthLoginController extends Controller
 
     public function dashboard()
     {
-        return Inertia::render('AdminPanel/AdminPanel');
+        $salas = \App\Models\Sala::all();
+        return Inertia::render('AdminPanel/AdminPanel', ['salas' => $salas]);
     }
 }
