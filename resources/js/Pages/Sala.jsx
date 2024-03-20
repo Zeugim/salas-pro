@@ -46,7 +46,7 @@ const Show = ({ sala, salasFavoritas, user }) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                setFavorito(!esFavoritoActual); // Actualizar el estado local
+                setFavorito(!esFavoritoActual);
                 return response.json();
             })
             .then(data => {
@@ -58,17 +58,6 @@ const Show = ({ sala, salasFavoritas, user }) => {
     };
 
     const [weatherData, setWeatherData] = useState(null);
-
-    /* useEffect(() => {
-        const fetchData = async () => {
-            const data = fetch('/api/weather/28/28079')
-                .then(response => response.json())
-                .then(data => setWeatherData(data))
-                .catch(error => console.error('Error fetching weather data:', error));
-        }
-
-        fetchData();
-    }, []); */
 
     useEffect(() => {
         const fetchData = async () => {
@@ -174,7 +163,6 @@ const Show = ({ sala, salasFavoritas, user }) => {
                                                         <p>Precipitación: {weatherData.precipitacion} l/m<sup>2</sup></p>
                                                         <p>Estado del cielo: {weatherData.estado_cielo_descripcion}</p>
                                                         <p>Humedad: {weatherData.humedad} %</p>
-                                                        {/* Agrega más campos según los datos que recibas de la API */}
                                                     </div>
                                                 ) : (
                                                     <p>Cargando datos meteorológicos...</p>

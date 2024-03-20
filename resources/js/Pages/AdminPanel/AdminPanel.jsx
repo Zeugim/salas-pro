@@ -17,7 +17,11 @@ const AdminPanel = ({ salas }) => {
     const handleDelSala = (salaID) => {
 
         axios.delete(`/admin/salas/${salaID}`)
-            .then(response => { console.log(response.data) })
+            .then(response => {
+                console.log(response.data);
+                // Después de eliminar la sala, volvemos a buscar las salas actualizadas
+                fetchSalas(); // Esta función debería ser una función que obtiene las salas nuevamente
+            })
             .catch(err => console.log(err));
     };
 
