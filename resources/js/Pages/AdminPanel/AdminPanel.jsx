@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Inertia } from '@inertiajs/inertia-react';
+import axios from 'axios';
 
 const AdminPanel = ({ salas }) => {
+
+
     console.log(salas)
     const handleLogout = () => {
         Inertia.post('/admin/logout');
@@ -11,7 +14,11 @@ const AdminPanel = ({ salas }) => {
         window.location.url = `http://localhost:8000/admin/salas/${salaID}/edit`
     };
 
-    const handleDelSala = () => {
+    const handleDelSala = (salaID) => {
+
+        axios.delete(`/admin/salas/${salaID}`)
+            .then(response => { console.log(response.data) })
+            .catch(err => console.log(err));
     };
 
     const EditSvg = () => (

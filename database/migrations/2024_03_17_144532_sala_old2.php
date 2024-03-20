@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("sala")->nullable();
             $table->string("provincia")->nullable();
             $table->string("municipio")->nullable();
+            $table->string("api_code")->nullable();
             $table->string("direccion")->nullable();
             $table->string("telefono")->nullable();
             $table->string("email")->nullable();

@@ -30,17 +30,20 @@ class AdminRoomController extends Controller
 
     public function edit(Sala $sala)
     {
-       // return view('admin.salas.edit', compact('sala'));
-        return Inertia::render('AdminPanel/EditRoomForm');
+        return Inertia::render('AdminPanel/EditRoomForm', compact('sala'));
     }
 
     public function update(Request $request, Sala $sala)
     {
-        // Validar y actualizar la sala
+        $sala -> update ($request->input());
+        $salas = Sala::all();
+        return inertia('AdminPanel/AdminPanel', ['salas' => $salas]);
     }
 
     public function destroy(Sala $sala)
     {
-        // Eliminar la sala
+        $sala -> delete ();
+        $salas = Sala::all();
+        return inertia('AdminPanel/AdminPanel', ['salas' => $salas]);
     }
 }

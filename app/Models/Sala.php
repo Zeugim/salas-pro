@@ -17,7 +17,9 @@ class Sala extends Model
     protected $fillable = [
         'sala',
         'provincia',
+        'provincia_code',
         'municipio',
+        'municipio_code',
         'direccion',
         'telefono',
         'email',

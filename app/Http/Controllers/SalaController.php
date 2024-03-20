@@ -21,7 +21,11 @@ class SalaController extends Controller
     public function show($id)
     {
         $sala = Sala::findOrFail($id);
-        return Inertia::render('Sala', ['sala' => $sala]);
+        $user = auth()->user();
+        $favorito = $user->salas()->where("user_id", $user->id)
+        ->where("sala_id", $sala->id)->get();
+
+        return Inertia::render('Sala', ['sala' => $sala, 'user' => $user, 'favorito' => $favorito]);
     }
 
     public function provincias()

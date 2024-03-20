@@ -6,7 +6,10 @@ import axios from 'axios';
 const CreateRoomForm = ({ sala }) => {
     const [formData, setFormData] = useState({
         sala: sala ? sala.sala : '',
+        provincia: sala ? sala.provincia : '',
+        provincia_code: sala ? sala.provincia_code : '',
         municipio: sala ? sala.municipio : '',
+        municipio_code: sala ? sala.municipio_code : '',
         direccion: sala ? sala.direccion : '',
         telefono: sala ? sala.telefono : '',
         email: sala ? sala.email : '',
@@ -82,6 +85,8 @@ const CreateRoomForm = ({ sala }) => {
                             />
                         </Form.Group>
                     </Col>
+                </Row>
+                <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group controlId="provincia">
                             <Form.Label>Provincia:</Form.Label>
@@ -90,6 +95,19 @@ const CreateRoomForm = ({ sala }) => {
                                 placeholder="Ingrese la provincia"
                                 name="provincia"
                                 value={formData.provincia}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group controlId="provincia_code">
+                            <Form.Label>Código de provincia:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Ingrese el código"
+                                name="provincia_code"
+                                value={formData.provincia_code}
                                 onChange={handleChange}
                                 required
                             />
@@ -111,6 +129,21 @@ const CreateRoomForm = ({ sala }) => {
                         </Form.Group>
                     </Col>
                     <Col md={6}>
+                        <Form.Group controlId="municipio_code">
+                            <Form.Label>Código de municipio:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Ingrese el código"
+                                name="municipio_code"
+                                value={formData.municipio_code}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row className="mb-3">
+                    <Col md={6}>
                         <Form.Group controlId="direccion">
                             <Form.Label>Dirección:</Form.Label>
                             <Form.Control
@@ -123,8 +156,6 @@ const CreateRoomForm = ({ sala }) => {
                             />
                         </Form.Group>
                     </Col>
-                </Row>
-                <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group controlId="telefono">
                             <Form.Label>Teléfono:</Form.Label>
@@ -137,6 +168,8 @@ const CreateRoomForm = ({ sala }) => {
                             />
                         </Form.Group>
                     </Col>
+                </Row>
+                <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group controlId="email">
                             <Form.Label>Email:</Form.Label>
@@ -149,8 +182,6 @@ const CreateRoomForm = ({ sala }) => {
                             />
                         </Form.Group>
                     </Col>
-                </Row>
-                <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group controlId="web">
                             <Form.Label>Web:</Form.Label>
@@ -163,6 +194,8 @@ const CreateRoomForm = ({ sala }) => {
                             />
                         </Form.Group>
                     </Col>
+                </Row>
+                <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group controlId="genero">
                             <Form.Label>Género:</Form.Label>
@@ -175,8 +208,6 @@ const CreateRoomForm = ({ sala }) => {
                             />
                         </Form.Group>
                     </Col>
-                </Row>
-                <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group controlId="aforo">
                             <Form.Label>Aforo:</Form.Label>

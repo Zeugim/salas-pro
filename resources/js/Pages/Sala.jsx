@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-const Show = ({ sala, salasFavoritas, user }) => {
+const Show = ({ sala, salasFavoritas, user, favorito }) => {
+
+    console.log(user)
+    console.log(favorito)
 
     const FavoritoSvg = () => (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" width="24px" height="24px">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" width="24px" height="24px">
+            <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
         </svg>
     )
     const NoFavoritoSvg = () => (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" width="24px" height="24px">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="grey" width="24px" height="24px">
             <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
         </svg>
     )
 
@@ -26,13 +29,10 @@ const Show = ({ sala, salasFavoritas, user }) => {
     }, [salasFavoritas]);
 
     const handleFavoritoChange = (event, salaId) => {
-        event.stopPropagation();
         console.log("sala Id" + salaId);
-        const esFavoritoActual = favoritos[salaId];
+        const esFavoritoActual = favorito.length > 0;
 
         const esFavoritoNuevo = !esFavoritoActual;
-        const nuevosFavoritos = { ...favoritos, [salaId]: esFavoritoNuevo };
-        setFavoritos(nuevosFavoritos);
 
         const id = user.id;
         const ruta = esFavoritoNuevo ? `/addfavoritos/${id}/${salaId}` : `/delfavoritos/${id}/${salaId}`;
@@ -59,16 +59,33 @@ const Show = ({ sala, salasFavoritas, user }) => {
 
     const [weatherData, setWeatherData] = useState(null);
 
-    useEffect(() => {
+    /* useEffect(() => {
         const fetchData = async () => {
-            const data = fetch('/api/weather/01/01001')
+            const data = fetch('/api/weather/28/28079')
                 .then(response => response.json())
                 .then(data => setWeatherData(data))
                 .catch(error => console.error('Error fetching weather data:', error));
         }
 
         fetchData();
-    }, []);
+    }, []); */
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`/api/weather/${sala.provincia_code}/${sala.municipio_code}`);
+                if (!response.ok) {
+                    throw new Error('No se pudo obtener los datos del clima');
+                }
+                const data = await response.json();
+                setWeatherData(data);
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+            }
+        };
+
+        fetchData();
+    }, [sala.provincia_code, sala.municipio_code]);
 
     return (
         <div className="container mt-4 pt-4" style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.1)' }}>
@@ -110,15 +127,18 @@ const Show = ({ sala, salasFavoritas, user }) => {
                                     <td><strong>Aforo</strong></td>
                                     <td>{sala.aforo}</td>
                                 </tr>
+                                {user && (
+                                    <tr>
+                                        <td><strong>Favorito</strong></td>
+                                        <td>
+                                            <button onClick={(e) => handleFavoritoChange(e, sala.id, favorito)}>
+                                                {favorito.length > 0 ? <FavoritoSvg /> : <NoFavoritoSvg />}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )}
                                 <tr>
-                                    <td><strong>Favorito</strong></td>
-                                    <td>
-                                        <button onClick={(e) => handleFavoritoChange(e, sala.id)}>
-                                            {favoritos[sala.id] ? <FavoritoSvg /> : <NoFavoritoSvg />}
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
+
                                     <td colSpan="2">
                                         <div>
                                             {weatherData ? (
@@ -127,7 +147,7 @@ const Show = ({ sala, salasFavoritas, user }) => {
                                                     <p>Fecha: {weatherData.fecha}</p>
                                                     <p>Temperatura: {weatherData.temperatura_actual} º</p>
                                                     <p>Viento: {weatherData.viento} km/h</p>
-                                                    <p>Precipitación: {weatherData.precipitacion}</p>
+                                                    <p>Precipitación: {weatherData.precipitacion} l/m<sup>2</sup></p>
                                                     <p>Estado del cielo: {weatherData.estado_cielo_descripcion}</p>
                                                     <p>Humedad: {weatherData.humedad} %</p>
                                                     {/* Agrega más campos según los datos que recibas de la API */}
