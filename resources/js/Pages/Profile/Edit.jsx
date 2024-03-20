@@ -12,7 +12,7 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
         >
             <Head title="Profile" />
 
-            <div className="dash1">
+            <div className="mt-5">
                 <div className="edit0">
                     <div className="edit1">
                         <UpdateProfileInformationForm
