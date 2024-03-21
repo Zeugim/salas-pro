@@ -22,8 +22,12 @@ class SalaController extends Controller
     {
         $sala = Sala::findOrFail($id);
         $user = auth()->user();
-        $favorito = $user->salas()->where("user_id", $user->id)
-        ->where("sala_id", $sala->id)->get();
+        $favorito= null;
+
+        if ($user) {
+            $favorito = $user->salas()->where("user_id", $user->id)
+            ->where("sala_id", $sala->id)->get();
+        }
 
         return Inertia::render('Sala', ['sala' => $sala, 'user' => $user, 'favorito' => $favorito]);
     }
