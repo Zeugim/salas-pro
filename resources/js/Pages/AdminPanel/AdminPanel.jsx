@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, Inertia } from '@inertiajs/inertia-react';
 import axios from 'axios';
 
 const AdminPanel = ({ salas }) => {
 
-
-    console.log(salas)
     const handleLogout = () => {
+        console.log('Se ha llamado a la función handleLogout');
         Inertia.post('/admin/logout');
     };
 
@@ -19,8 +18,7 @@ const AdminPanel = ({ salas }) => {
         axios.delete(`/admin/salas/${salaID}`)
             .then(response => {
                 console.log(response.data);
-                // Después de eliminar la sala, volvemos a buscar las salas actualizadas
-                fetchSalas(); // Esta función debería ser una función que obtiene las salas nuevamente
+                fetchSalas();
             })
             .catch(err => console.log(err));
     };
@@ -40,10 +38,11 @@ const AdminPanel = ({ salas }) => {
     return (
         <div className="container">
             <h1 className="mt-4">Panel de Administración</h1>
-            <ul>
-                <li><Link href="/admin/salas/create">Crear Sala</Link></li>
-                <li><Link href="/admin/users/create">Crear Usuario</Link></li>
-            </ul>
+            <div className="d-flex justify-content-center my-5">
+                <button onClick="" className="btn btn-primary" style={{ width: '30%', border: '2px solid #2c3e50', borderRadius: '5px', fontWeight: 'bold', backgroundColor: '#2c3e50', color: '#f3f4f6' }}>
+                    <div><Link href="/admin/salas/create" style={{ width: '30%', border: '2px solid #2c3e50', borderRadius: '5px', fontWeight: 'bold', backgroundColor: '#2c3e50', color: '#f3f4f6', textDecoration: "none" }}>Crear Sala</Link></div>
+                </button>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -76,10 +75,10 @@ const AdminPanel = ({ salas }) => {
                         ))}
                 </tbody>
             </table>
-            <div className="d-flex justify-content-center mt-2">
+            <div className="d-flex justify-content-center mt-5">
                 <button onClick={handleLogout} className="btn btn-primary" style={{ width: '30%', border: '2px solid #2c3e50', borderRadius: '5px', fontWeight: 'bold', backgroundColor: '#2c3e50', color: '#f3f4f6' }}>Cerrar Sesión</button>
             </div>
-        </div>
+        </div >
 
     );
 };

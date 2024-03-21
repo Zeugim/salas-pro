@@ -28,7 +28,6 @@ Route::get('/delfavoritos/{user}/{sala}', [\App\Http\Controllers\FavoritosContro
 
 Route::get('/salas/{id}', [SalaController::class, 'show'])->name('sala.show');
 
-
 Route::get('/', function () {
     $salas = App\Models\Sala::all();
     $user = auth()->user();
@@ -39,8 +38,6 @@ Route::get('/', function () {
     }
     return Inertia::render('Welcome', compact("salas","user", "salasFavoritas"));
 })->name('welcome');
-
-
 
 Route::get('/dashboard', function () {
     $user = auth()->user();
@@ -62,19 +59,15 @@ Route::get('/provincias', [SalaController::class, 'provincias'])->name('provinci
 Route::get('/municipios-por-provincia', [SalaController::class, 'municipiosPorProvincia']);
 
 
-// Rutas para la autenticación del usuario administrador
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/login', [AdminAuthLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [AdminAuthLoginController::class, 'login'])->name('login.submit');
     Route::post('/logout', [AdminAuthLoginController::class, 'logout'])->name('logout');
     Route::middleware('auth:admin')->group(function () {
-        // Rutas del panel de administración
         Route::get('/dashboard', [AdminAuthLoginController::class, 'dashboard'])->name('dashboard');
-        // Otras rutas del panel de administración
     });
 });
 
-// Rutas para la gestión de salas por el administrador
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/salas', [App\Http\Controllers\AdminRoomController::class, 'index'])->name('admin.salas.index');
     Route::get('/admin/salas/create', [App\Http\Controllers\AdminRoomController::class, 'create'])->name('admin.salas.create');
@@ -83,7 +76,5 @@ Route::middleware('auth:admin')->group(function () {
     Route::put('/admin/salas/{sala}', [App\Http\Controllers\AdminRoomController::class, 'update'])->name('admin.salas.update');
     Route::delete('/admin/salas/{sala}', [App\Http\Controllers\AdminRoomController::class, 'destroy'])->name('admin.salas.destroy');
 });
-
-
 
 require __DIR__.'/auth.php';

@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Head } from '@inertiajs/react';
+import { Collapse } from 'react-bootstrap';
 
 export default function Welcome({ user, laravelVersion, phpVersion, salas, salasFavoritas }) {
+
+    const [open, setOpen] = useState(false);
+    const [buttonText, setButtonText] = useState('Instrucciones');
+
+    const toggleCollapse = () => {
+        setOpen(!open);
+        if (open) {
+            setButtonText('Instrucciones');
+        } else {
+            setButtonText('Ocultar');
+        }
+    };
 
     const FavoritoSvg = () => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" width="24px" height="24px">
@@ -154,12 +167,6 @@ export default function Welcome({ user, laravelVersion, phpVersion, salas, salas
         <>
             <Head title="Welcome" />
 
-
-
-            <button></button>
-
-
-
             <nav className="navbar navbar-light bg-white fixed-top shadow-sm px-5">
                 <div className="container-fluid">
                     <div className="d-none d-md-block">
@@ -182,11 +189,54 @@ export default function Welcome({ user, laravelVersion, phpVersion, salas, salas
                 </div>
             </nav>
 
-            <div className="container mt-5 pt-5 pb-4" style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.1)' }}>
+            <div className='d-flex justify-content-center align-items-center mt-5'>
+                <div className='row justify-content-center'>
+                    <div className='col-md-8 mt-4'>
+                        <Collapse in={open}>
+                            <div>
+                                <p className='text-center'>Aquí podrás buscar salas de concierto ubicadas en distintas provincias de España.</p>
+                                <p className='text-center'>Uso del formulario:</p>
+                                <div className='d-flex justify-content-center align-items-center'>
+                                    <ul className='col-md-8'>
+                                        <li>Puedes filtrar la búsqueda por sala, provincia, municipio, género y aforo.</li>
+                                        <br />
+                                        <li>Al seleccionar una sala, el resto de opciones se bloquearán, ya que la sala es el destino final y contiene todos los datos, pulsando sobre el nombre de la sala se abrirá una nueva ventana con la página personal de sala.</li>
+                                        <br />
+                                        <li>El selector de municipio aparece bloqueado de inicio, se desploqueará después de selccionar una provincia.</li>
+                                        <br />
+                                        <li>Todos los selectores están relacionados entre sí, si por ejemplo seleccionas un género o un aforo, el resto de selectores mostrarán únicamente los datos que contengas el género o aforo seleccionado.</li>
+                                        <br />
+                                        <li>Se pueden combinar todos los selectores (salvo el de sala) para realizar una búsqueda más detallada.</li>
+                                        <br />
+                                        <li>El potón "Restablecer" borrará las opciones seleccionadas en el formulario y los datos mostrados.</li>
+                                        <br />
+                                        <li>Pulsando el botón "Buscar" con el formlario vacío, se mostrarán todas las salas disponibles.</li>
+                                    </ul>
+                                </div>
+                                <br />
+                                <p className='text-center'>Además, creando un nuevo usuario o accediendo con uno ya existente, podrás guardar tus salas favoritas.</p>
+                                <p className='text-center'>Tras realizar el acceso, en la tabla de la salas mostradas aparecerrá una nueva columnas con corazones.</p>
+                                <p className='text-center'>Si el corazón está gris, quiere decir que aún no has guardado esa sala.</p>
+                                <p className='text-center'>Si el corazón aparece en rojo significa que la sala está guardada en tu lista de salas favoritas.</p>
+                                <p className='text-center mb-4'>
+                                    Las salas guardadas como favoritas también se mostrarán en tu perfil personal, desde allí podrás eliminarlas.</p>
+                            </div>
+                        </Collapse>
+                        <div className='d-flex justify-content-center'>
+                            <button className='btn btn-outline-dark float-end' style={{ border: '2px solid #2c3e50', borderRadius: '5px', fontWeight: 'bold' }} onClick={toggleCollapse} aria-controls="example-collapse-text" aria-expanded={open}>
+                                {buttonText}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div className="container mt-4 pt-4 pb-4" style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.1)' }}>
                 <div className="row justify-content-center">
                     <div className="col-12 col-md-8 col-lg-6">
                         <h1 className="pb-2">Salas de concierto</h1>
-                        <div className="d-none d-md-block my-4">
+                        {/* <div className="d-none d-md-block my-4">
                             <form method="get" action="" className="d-flex">
                                 <input type="text" id="busqueda" name="busqueda" placeholder="¿Qué quieres buscar?" className="form-control buscartext" />
                                 <button type="submit" className="enviar-btn">Buscar</button>
@@ -199,7 +249,7 @@ export default function Welcome({ user, laravelVersion, phpVersion, salas, salas
                                     <button type="submit" className="btn enviar-btn">Buscar</button>
                                 </form>
                             </div>
-                        </div>
+                        </div> */}
                         <form
                             id="formularioBusqueda"
                             onSubmit={handleSubmit}
@@ -399,10 +449,13 @@ export default function Welcome({ user, laravelVersion, phpVersion, salas, salas
                                         })
                                         .map(sala => sala.aforo)
                                 )]
-                                    .filter(aforo => aforo !== null)
-                                    .map(aforo => parseInt(aforo))
                                     .filter((aforo, index, self) => self.indexOf(aforo) === index)
-                                    .sort((a, b) => a - b)
+                                    .sort((a, b) => {
+                                        const numA = parseInt(a) || 0;
+                                        const numB = parseInt(b) || 0;
+                                        return numA - numB;
+                                    })
+
                                     .map((aforo, index) => (
                                         <option key={index} value={aforo}>
                                             {aforo}
